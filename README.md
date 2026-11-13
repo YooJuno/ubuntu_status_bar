@@ -1,8 +1,4 @@
-# juno_tools
-
-Ubuntu에서 사용하는 작은 도구 모음입니다.
-
-## Juno System Monitor
+# Ubuntu Status Bar
 
 Ubuntu 상단 패널의 **날짜/시계와 오른쪽 시스템 아이콘 사이**에 CPU, GPU, 메모리, 저장장치 상태를 표시하는 GNOME Shell 확장입니다.
 
@@ -29,17 +25,17 @@ Ubuntu 상단 패널의 **날짜/시계와 오른쪽 시스템 아이콘 사이*
 
 Releases에서 **Ubuntu 설치 패키지(.deb)** 또는 **GNOME 확장 ZIP**을 받을 수 있습니다.
 
-- [최신 설치 파일](https://github.com/YooJuno/juno_tools/releases/latest)
+- [최신 설치 파일](https://github.com/YooJuno/ubuntu_status_bar/releases/latest)
 - `.deb`: 패키지 설치 앱으로 열거나 `sudo apt install ./juno-system-monitor_0.5.3_all.deb`로 설치합니다. 이후 일반 사용자로 `juno-system-monitor enable`을 실행합니다.
 - 기존 ZIP/소스 설치에서 `.deb`로 전환할 때는 `juno-system-monitor migrate`를 실행합니다. 기존 설치를 백업하고 사용자 설정은 유지합니다.
 - X11은 Alt+F2 → r → Enter, Wayland는 로그아웃/로그인 후 표시됩니다.
-- 앱 목록의 **Juno 시스템 모니터 설정** 또는 `juno-system-monitor preferences`로 설정을 엽니다.
+- 앱 목록의 **Ubuntu 상태 표시줄 설정** 또는 `juno-system-monitor preferences`로 설정을 엽니다.
 
 인터넷이 연결된 다른 PC의 GNOME 데스크톱 터미널에서는 아래 명령으로 설치하거나 업데이트할 수 있습니다. ARM64용 Ubuntu 24.04에서도 같은 패키지를 사용합니다.
 
 ```bash
 wget -O juno-system-monitor_0.5.3_all.deb \
-  https://github.com/YooJuno/juno_tools/releases/download/v0.5.3/juno-system-monitor_0.5.3_all.deb &&
+  https://github.com/YooJuno/ubuntu_status_bar/releases/download/v0.5.3/juno-system-monitor_0.5.3_all.deb &&
 sudo apt install ./juno-system-monitor_0.5.3_all.deb &&
 juno-system-monitor enable
 ```
@@ -51,8 +47,8 @@ juno-system-monitor enable
 기본 Ubuntu GNOME 환경에서 관리자 권한 없이 설치합니다.
 
 ```bash
-git clone https://github.com/YooJuno/juno_tools.git
-cd juno_tools
+git clone https://github.com/YooJuno/ubuntu_status_bar.git
+cd ubuntu_status_bar
 bash gnome-system-monitor/install.sh --enable
 ```
 
@@ -125,6 +121,8 @@ gnome-extensions uninstall system-monitor@juno-tools
 
 런타임은 GJS이며 외부 npm 라이브러리는 없습니다. Node.js는 계산·파서·갱신 일정 테스트에만 사용합니다.
 
+저장소·표시 이름은 Ubuntu Status Bar로 변경했습니다. 기존 설치와 설정을 유지하기 위해 확장 UUID `system-monitor@juno-tools`, 설정 스키마, `juno-system-monitor` 명령과 패키지 이름은 유지합니다.
+
 ```bash
 npm test
 gjs -m tests/collector-smoke.js
@@ -138,6 +136,8 @@ bash gnome-system-monitor/pack.sh
 ```
 
 센서 테스트는 실제 `/proc`와 `/sys`를 읽고, 잘못된 경로에 대한 오류 격리 및 수집 도중 취소도 확인합니다. GitHub Actions에서 이 검사와 설치 ZIP 생성을 수행합니다.
+
+`main` push·PR·수동 실행에서 검사 후 `.deb`·확장 ZIP·설치 안내·SHA-256을 Actions Artifacts에 저장합니다. `package.json`의 버전과 일치하는 `vX.Y.Z` 태그를 push하면 모든 검사를 통과한 파일만 GitHub Release로 공개합니다. GNOME 46 전용 확장이므로 Windows·macOS 패키지는 만들지 않습니다.
 
 회귀 테스트는 느린 파일시스템의 작업 누적 방지, 숨긴 센서 생략, 장치 변경, GPU 프로세스 재사용·응답 중단·종료·취소를 검사합니다. 성능 측정은 CI 통과 기준으로 사용하지 않습니다.
 

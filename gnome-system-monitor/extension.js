@@ -39,7 +39,7 @@ export default class JunoSystemMonitor extends Extension {
         try {
             this._settings = this.getSettings();
             this._monitor = new SystemMonitor();
-            this._button = new PanelMenu.Button(0.5, 'Juno System Monitor');
+            this._button = new PanelMenu.Button(0.5, 'Ubuntu Status Bar');
             this._button.add_style_class_name('juno-monitor-button');
             this._button.accessible_name = 'CPU, GPU, memory and storage status';
             const box = new St.BoxLayout({style_class: 'juno-monitor-panel'});
