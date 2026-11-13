@@ -1,9 +1,9 @@
 {
   "uuid": "system-monitor@juno-tools",
-  "name": "Juno System Monitor",
+  "name": "Ubuntu Status Bar",
   "description": "CPU, GPU, memory and storage status between the clock and system indicators.",
   "shell-version": ["46"],
-  "url": "https://github.com/YooJuno/juno_tools",
+  "url": "https://github.com/YooJuno/ubuntu_status_bar",
   "settings-schema": "org.gnome.shell.extensions.juno-system-monitor",
   "version": 8
 }

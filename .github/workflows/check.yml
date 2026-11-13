@@ -1,10 +1,15 @@
-name: Check system monitor
-on: [push, pull_request]
+name: Check and release Ubuntu Status Bar
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+  workflow_dispatch:
 permissions:
   contents: read
 concurrency:
   group: monitor-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: ${{ !startsWith(github.ref, 'refs/tags/') }}
 jobs:
   check:
     runs-on: ubuntu-24.04
@@ -16,6 +21,11 @@ jobs:
           node-version: '24'
       - run: sudo apt-get update && sudo apt-get install -y --no-install-recommends gjs libglib2.0-bin gnome-shell desktop-file-utils
       - run: npm test
+      - name: Validate release version
+        if: startsWith(github.ref, 'refs/tags/v')
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: node --input-type=module -e "import fs from 'node:fs'; const version = JSON.parse(fs.readFileSync('package.json')).version; if (process.env.RELEASE_TAG !== 'v' + version) throw new Error('Tag must match package.json version');"
       - run: glib-compile-schemas --strict gnome-system-monitor/schemas
       - run: gjs -m tests/collector-smoke.js
       - run: gjs -m tests/monitor-regression.js
@@ -28,8 +38,30 @@ jobs:
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: juno-system-monitor
+          if-no-files-found: error
           path: |
             dist/*.shell-extension.zip
             dist/*.deb
             dist/INSTALL.ko.md
             dist/SHA256SUMS
+
+  release:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: check
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v8.0.2
+        with:
+          name: juno-system-monitor
+          path: release
+      - name: Publish verified packages
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          cd release
+          sha256sum --check --strict SHA256SUMS
+          gh release create "$RELEASE_TAG" ./*.deb ./*.shell-extension.zip INSTALL.ko.md SHA256SUMS --verify-tag --generate-notes --title "Ubuntu Status Bar $RELEASE_TAG"

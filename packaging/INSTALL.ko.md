@@ -1,4 +1,4 @@
-# Juno System Monitor 설치
+# Ubuntu Status Bar 설치
 
 지원 환경: **Ubuntu 24.04 / GNOME Shell 46**, X11 또는 Wayland.
 
@@ -15,7 +15,7 @@ juno-system-monitor enable
 
 ```bash
 wget -O juno-system-monitor_@VERSION@_all.deb \
-  https://github.com/YooJuno/juno_tools/releases/download/v@VERSION@/juno-system-monitor_@VERSION@_all.deb &&
+  https://github.com/YooJuno/ubuntu_status_bar/releases/download/v@VERSION@/juno-system-monitor_@VERSION@_all.deb &&
 sudo apt install ./juno-system-monitor_@VERSION@_all.deb &&
 juno-system-monitor enable
 ```
@@ -30,7 +30,7 @@ ARM64와 x86-64에서 같은 패키지를 사용합니다. 기존 `.deb`를 업�
 juno-system-monitor migrate
 ```
 
-설정은 앱 목록의 **Juno 시스템 모니터 설정** 또는 아래 명령으로 엽니다.
+설정은 앱 목록의 **Ubuntu 상태 표시줄 설정** 또는 아래 명령으로 엽니다.
 
 ```bash
 juno-system-monitor preferences

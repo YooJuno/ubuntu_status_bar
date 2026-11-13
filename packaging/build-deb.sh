@@ -36,7 +36,7 @@ Priority: optional
 Architecture: all
 Maintainer: YooJuno <87231813+YooJuno@users.noreply.github.com>
 Depends: gnome-shell (>= 46~), gnome-shell (<< 47~), gjs (>= 1.80), gir1.2-adw-1 (>= 1.4), gir1.2-gtk-4.0, libglib2.0-bin, dconf-gsettings-backend | gsettings-backend
-Homepage: https://github.com/YooJuno/juno_tools
+Homepage: https://github.com/YooJuno/ubuntu_status_bar
 Description: Compact CPU, GPU, memory and storage indicators for GNOME 46
  Displays resource utilization in the GNOME top bar and detailed sensor readings
  on demand. Intended for Ubuntu 24.04. NVIDIA drivers are optional and are not
@@ -45,8 +45,8 @@ EOF
 echo 'activate /usr/share/glib-2.0/schemas' > "$stage/DEBIAN/triggers"
 cat > "$stage/usr/share/doc/juno-system-monitor/copyright" <<'EOF'
 Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
-Upstream-Name: juno_tools
-Source: https://github.com/YooJuno/juno_tools
+Upstream-Name: ubuntu_status_bar
+Source: https://github.com/YooJuno/ubuntu_status_bar
 
 Files: *
 Copyright: 2026 YooJuno
